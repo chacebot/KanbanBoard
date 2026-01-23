@@ -1,0 +1,95 @@
+# Cursor Rules for Kanban Board
+
+This file provides guidance to Cursor AI when working with code in this repository.
+
+## Build & Run Commands
+
+This is an iOS SwiftUI application:
+
+```bash
+# Open project in Xcode
+open KanbanBoard.xcodeproj
+
+# Build from command line
+xcodebuild -project KanbanBoard.xcodeproj -scheme KanbanBoard -destination 'platform=iOS Simulator,name=iPhone 15' build
+
+# Run tests
+xcodebuild test -project KanbanBoard.xcodeproj -scheme KanbanBoard -destination 'platform=iOS Simulator,name=iPhone 15'
+```
+
+## Architecture
+
+### Tech Stack
+- **SwiftUI** for UI
+- **Swift 5.9+**
+- **iOS 17.0+**
+- **UserDefaults** for persistence
+
+### Project Structure
+- `KanbanBoard/Models/` - Data models (Board, Column, Card)
+- `KanbanBoard/ViewModels/` - Business logic and state management (BoardManager)
+- `KanbanBoard/Views/` - SwiftUI views
+- `KanbanBoard/KanbanBoardApp.swift` - App entry point
+
+### Patterns
+- MVVM architecture pattern
+- ObservableObject for state management
+- Codable for data persistence
+- SwiftUI declarative UI
+
+## Workflow Preferences
+
+### Planning & Commits
+- For non-trivial changes, propose a short plan (1-6 bullets) describing edits, tests, and files before proceeding
+- **Commit frequently**: Make commits after completing individual tasks, small changes, or logical units of work - don't wait for large batches of changes
+- Apply minimal, focused edits; prefer smaller, more frequent commits over larger, infrequent ones
+- Commit after each meaningful change: when a function is added, a bug is fixed, a test passes, or a small feature is complete
+- Use short, descriptive commit messages
+- Run build before committing; stop and report failures with suggested fixes
+- Create feature branches for changes (e.g., `git checkout -b feature/drag-drop-improvements`)
+- Update README.md when adding new features or changing behavior
+
+### Commit Frequency Guidelines
+- **Default to committing more often**: When in doubt, commit. It's better to have many small commits than few large ones
+- Commit after completing any of the following:
+  - Adding a new function or view
+  - Fixing a bug
+  - Adding or updating tests
+  - Refactoring a specific piece of code
+  - Updating documentation for a specific change
+  - Making a small UI change or styling update
+  - Adding a new feature that is functionally complete (even if part of a larger feature)
+- Don't wait to accumulate multiple changes before committing
+- Each commit should represent a single, complete thought or change
+- If you've made several edits and haven't committed yet, commit the current changes before continuing
+
+### Code Quality
+- Follow Swift and SwiftUI best practices
+- Keep views small and composable
+- Use @StateObject and @EnvironmentObject appropriately
+- When referencing code, show exact `path/to/file` and function names
+- Maintain consistent Swift naming conventions
+- Use type inference where appropriate but be explicit when it improves clarity
+- Always verify that code changes compile before suggesting them
+
+### SwiftUI Guidelines
+- Prefer declarative SwiftUI patterns
+- Use @State for local view state
+- Use @StateObject for view-owned observable objects
+- Use @EnvironmentObject for shared state
+- Keep views focused and reusable
+- Use proper view modifiers and styling
+
+### Data Persistence
+- Currently using UserDefaults for simplicity
+- All models conform to Codable for easy serialization
+- BoardManager handles all persistence logic
+
+## Additional Cursor-Specific Guidelines
+
+- When editing Swift files, ensure proper indentation and formatting
+- Prefer using SwiftUI's declarative patterns
+- When suggesting changes, provide code examples with proper Swift syntax
+- Always verify that code changes compile before suggesting them
+- Follow the existing code style and patterns in the codebase
+- Use Swift's type system effectively (Optionals, Enums, etc.)
