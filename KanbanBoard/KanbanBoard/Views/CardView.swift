@@ -16,36 +16,35 @@ struct CardView: View {
     @State private var cardImages: [UIImage] = [] // Keep for drag preview only
     
     var body: some View {
-        Button(action: {
-            showingEditCard = true
-        }) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(card.title)
-                    .font(.headline)
-                    .foregroundColor(.primary)
+        VStack(alignment: .leading, spacing: 8) {
+            Text(card.title)
+                .font(.headline)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.leading)
+
+            if !card.description.isEmpty {
+                Text(card.description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(3)
                     .multilineTextAlignment(.leading)
-                
-                if !card.description.isEmpty {
-                    Text(card.description)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(3)
-                        .multilineTextAlignment(.leading)
-                }
-                
-                HStack {
-                    Spacer()
-                    Text(formatDate(card.createdAt))
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
+
+            HStack {
+                Spacer()
+                Text(formatDate(card.createdAt))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
         }
-        .buttonStyle(PlainButtonStyle())
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            showingEditCard = true
+        }
         .draggable(card.id.uuidString) {
             // Drag preview
             VStack(alignment: .leading, spacing: 8) {
@@ -72,13 +71,6 @@ struct CardView: View {
             .background(Color(.systemBackground))
             .cornerRadius(8)
             .shadow(radius: 4)
-        }
-        .contextMenu {
-            Button(role: .destructive, action: {
-                boardManager.deleteCard(card.id, from: columnId)
-            }) {
-                Label("Delete", systemImage: "trash")
-            }
         }
         .sheet(isPresented: $showingEditCard) {
             EditCardView(card: card, columnId: columnId)

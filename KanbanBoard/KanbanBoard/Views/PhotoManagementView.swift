@@ -18,7 +18,7 @@ struct PhotoManagementView: View {
         NavigationView {
             Form {
                 Section(header: Text("Manage Photos")) {
-                    PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 10, matching: .images) {
+                    PhotosPicker(selection: $selectedPhotos, matching: .images) {
                         Label("Add Photos", systemImage: "photo.on.rectangle")
                     }
                     .onChange(of: selectedPhotos) { oldValue, newValue in

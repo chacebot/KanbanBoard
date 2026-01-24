@@ -52,7 +52,11 @@ struct ZoomableImageView: View {
     @State private var lastScale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
-    
+
+    private var isZoomed: Bool {
+        scale > 1.0
+    }
+
     var body: some View {
         Image(uiImage: image)
             .resizable()
@@ -60,35 +64,35 @@ struct ZoomableImageView: View {
             .scaleEffect(scale)
             .offset(offset)
             .gesture(
-                SimultaneousGesture(
-                    MagnificationGesture()
-                        .onChanged { value in
-                            scale = lastScale * value
-                        }
-                        .onEnded { _ in
-                            withAnimation {
-                                if scale < 1.0 {
-                                    scale = 1.0
-                                    offset = .zero
-                                } else if scale > 4.0 {
-                                    scale = 4.0
-                                }
-                                lastScale = scale
+                MagnificationGesture()
+                    .onChanged { value in
+                        scale = lastScale * value
+                    }
+                    .onEnded { _ in
+                        withAnimation {
+                            if scale < 1.0 {
+                                scale = 1.0
+                                offset = .zero
+                            } else if scale > 4.0 {
+                                scale = 4.0
                             }
-                        },
-                    DragGesture()
-                        .onChanged { value in
-                            if scale > 1.0 {
-                                offset = CGSize(
-                                    width: lastOffset.width + value.translation.width,
-                                    height: lastOffset.height + value.translation.height
-                                )
-                            }
+                            lastScale = scale
                         }
-                        .onEnded { _ in
-                            lastOffset = offset
-                        }
-                )
+                    }
+            )
+            .gesture(
+                isZoomed ?
+                DragGesture()
+                    .onChanged { value in
+                        offset = CGSize(
+                            width: lastOffset.width + value.translation.width,
+                            height: lastOffset.height + value.translation.height
+                        )
+                    }
+                    .onEnded { _ in
+                        lastOffset = offset
+                    }
+                : nil
             )
             .onTapGesture(count: 2) {
                 withAnimation {

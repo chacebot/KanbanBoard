@@ -17,7 +17,7 @@ struct ContentView: View {
         NavigationView {
             KanbanBoardView()
                 .navigationTitle(boardManager.board.name)
-                .navigationBarTitleDisplayMode(.large)
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Menu {

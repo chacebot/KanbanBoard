@@ -22,7 +22,8 @@ struct EditCardView: View {
     @State private var showingPhotoViewer = false
     @State private var selectedPhotoIndex = 0
     @State private var showingPhotoManagement = false
-    
+    @State private var showingDeleteConfirmation = false
+
     init(card: Card, columnId: UUID) {
         self.card = card
         self.columnId = columnId
@@ -41,8 +42,13 @@ struct EditCardView: View {
             Form {
                 Section(header: Text("Card Details")) {
                     TextField("Title", text: $title)
-                    TextField("Description", text: $description, axis: .vertical)
-                        .lineLimit(3...6)
+                }
+
+                Section(header: Text("Description")) {
+                    TextEditor(text: $description)
+                        .frame(minHeight: 120)
+                        .scrollContentBackground(.hidden)
+                        .background(Color(.systemBackground))
                 }
                 
                 Section {
@@ -108,6 +114,15 @@ struct EditCardView: View {
                         }
                         .foregroundColor(.green)
                     }
+
+                    Button(role: .destructive) {
+                        showingDeleteConfirmation = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "trash")
+                            Text("Delete Card")
+                        }
+                    }
                 }
                 
                 if !card.history.isEmpty {
@@ -133,6 +148,15 @@ struct EditCardView: View {
             }
             .sheet(isPresented: $showingPhotoManagement) {
                 PhotoManagementView(selectedImages: $selectedImages, selectedPhotos: $selectedPhotos)
+            }
+            .alert("Delete Card", isPresented: $showingDeleteConfirmation) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    boardManager.deleteCard(card.id, from: columnId)
+                    dismiss()
+                }
+            } message: {
+                Text("Are you sure you want to delete this card? This action cannot be undone.")
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

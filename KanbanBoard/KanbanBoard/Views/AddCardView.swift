@@ -29,7 +29,7 @@ struct AddCardView: View {
                 }
                 
                 Section(header: Text("Photos")) {
-                    PhotosPicker(selection: $selectedPhotos, maxSelectionCount: 10, matching: .images) {
+                    PhotosPicker(selection: $selectedPhotos, matching: .images) {
                         Label("Select Photos (\(selectedImages.count))", systemImage: "photo.on.rectangle")
                     }
                     .onChange(of: selectedPhotos) { oldValue, newValue in
