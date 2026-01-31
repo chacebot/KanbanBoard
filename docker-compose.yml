@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: kanban-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kanban
+      POSTGRES_PASSWORD: kanban
+      POSTGRES_DB: kanban
+    ports:
+      - "5432:5432"
+    volumes:
+      - kanban_pgdata:/var/lib/postgresql/data
+      - ./backend/migrations:/migrations:ro
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kanban-api
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PORT: "8000"
+      DATABASE_URL: "postgres://kanban:kanban@db:5432/kanban"
+      AUTH_DISABLED: "true"
+      AUTH_DEV_USER_ID: "dev-user"
+    ports:
+      - "8000:8000"
+
+volumes:
+  kanban_pgdata:

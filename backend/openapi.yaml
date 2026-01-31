@@ -40,7 +40,380 @@ paths:
                 default:
                   value:
                     status: ok
+  /boards:
+    get:
+      tags:
+        - boards
+      summary: List boards
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Board list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardListResponse"
+    post:
+      tags:
+        - boards
+      summary: Create a board
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoardCreateRequest"
+      responses:
+        "201":
+          description: Board created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /boards/{id}:
+    get:
+      tags:
+        - boards
+      summary: Get a board by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Board
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+        "404":
+          description: Board not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /boards/{id}/columns:
+    get:
+      tags:
+        - columns
+      summary: List columns for a board
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Column list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColumnListResponse"
+  /columns:
+    post:
+      tags:
+        - columns
+      summary: Create a column
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ColumnCreateRequest"
+      responses:
+        "201":
+          description: Column created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Column"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /columns/{id}:
+    get:
+      tags:
+        - columns
+      summary: Get a column by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Column
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Column"
+        "404":
+          description: Column not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /columns/{id}/cards:
+    get:
+      tags:
+        - cards
+      summary: List cards for a column
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Card list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardListResponse"
+  /cards:
+    post:
+      tags:
+        - cards
+      summary: Create a card
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardCreateRequest"
+      responses:
+        "201":
+          description: Card created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /cards/{id}:
+    get:
+      tags:
+        - cards
+      summary: Get a card by ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+        "404":
+          description: Card not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /sync/boards:
+    post:
+      tags:
+        - sync
+      summary: Sync boards (bulk create)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoardSyncRequest"
+      responses:
+        "201":
+          description: Boards synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardListResponse"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      tags:
+        - sync
+      summary: Sync boards (read)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: since
+          required: false
+          description: ISO 8601 date-time or YYYY-MM-DD for incremental sync.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Boards synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardListResponse"
+        "400":
+          description: Invalid date parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /sync/columns:
+    post:
+      tags:
+        - sync
+      summary: Sync columns (bulk create)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ColumnSyncRequest"
+      responses:
+        "201":
+          description: Columns synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColumnListResponse"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      tags:
+        - sync
+      summary: Sync columns (read)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: since
+          required: false
+          description: ISO 8601 date-time or YYYY-MM-DD for incremental sync.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Columns synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColumnListResponse"
+        "400":
+          description: Invalid date parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /sync/cards:
+    post:
+      tags:
+        - sync
+      summary: Sync cards (bulk create)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardSyncRequest"
+      responses:
+        "201":
+          description: Cards synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardListResponse"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      tags:
+        - sync
+      summary: Sync cards (read)
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: since
+          required: false
+          description: ISO 8601 date-time or YYYY-MM-DD for incremental sync.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Cards synced
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardListResponse"
+        "400":
+          description: Invalid date parameter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     RootResponse:
       type: object
@@ -58,4 +431,174 @@ components:
         status:
           type: string
           example: ok
+    Board:
+      type: object
+      required:
+        - id
+        - title
+        - createdAt
+      properties:
+        id:
+          type: string
+          example: 8d0b9c7f-8cf4-4d5d-a8b8-6a10d04c0d87
+        title:
+          type: string
+          example: Personal Tasks
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-01-28T18:00:00.000Z
+    BoardCreateRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+    BoardListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Board"
+    Column:
+      type: object
+      required:
+        - id
+        - boardId
+        - title
+        - position
+        - createdAt
+      properties:
+        id:
+          type: string
+          example: f4f6c3a1-0c7c-4a62-8fa1-5b0e0a0ea6f2
+        boardId:
+          type: string
+          example: 8d0b9c7f-8cf4-4d5d-a8b8-6a10d04c0d87
+        title:
+          type: string
+          example: To Do
+        position:
+          type: number
+          example: 0
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-01-28T18:00:00.000Z
+    ColumnCreateRequest:
+      type: object
+      required:
+        - boardId
+        - title
+        - position
+      properties:
+        boardId:
+          type: string
+        title:
+          type: string
+        position:
+          type: number
+    ColumnListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Column"
+    Card:
+      type: object
+      required:
+        - id
+        - columnId
+        - title
+        - description
+        - position
+        - createdAt
+      properties:
+        id:
+          type: string
+          example: ebd8512d-11cf-4a77-8dc1-4b6f174af770
+        columnId:
+          type: string
+          example: f4f6c3a1-0c7c-4a62-8fa1-5b0e0a0ea6f2
+        title:
+          type: string
+          example: Draft roadmap
+        description:
+          type: string
+          nullable: true
+          example: Outline Q2 initiatives.
+        position:
+          type: number
+          example: 0
+        createdAt:
+          type: string
+          format: date-time
+          example: 2026-01-28T18:00:00.000Z
+    CardCreateRequest:
+      type: object
+      required:
+        - columnId
+        - title
+        - description
+        - position
+      properties:
+        columnId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        position:
+          type: number
+    CardListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Card"
+    BoardSyncRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/BoardCreateRequest"
+    ColumnSyncRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ColumnCreateRequest"
+    CardSyncRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CardCreateRequest"
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
 
