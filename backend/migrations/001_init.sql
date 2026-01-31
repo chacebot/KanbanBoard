@@ -1,0 +1,40 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS boards (
+  id UUID PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS boards_user_id_idx ON boards(user_id);
+
+CREATE TABLE IF NOT EXISTS columns (
+  id UUID PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  board_id UUID NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  position INTEGER NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS columns_user_id_idx ON columns(user_id);
+CREATE INDEX IF NOT EXISTS columns_board_id_idx ON columns(board_id);
+
+CREATE TABLE IF NOT EXISTS cards (
+  id UUID PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  column_id UUID NOT NULL REFERENCES columns(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  description TEXT NULL,
+  position INTEGER NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS cards_user_id_idx ON cards(user_id);
+CREATE INDEX IF NOT EXISTS cards_column_id_idx ON cards(column_id);
