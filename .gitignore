@@ -91,3 +91,10 @@ iOSInjectionProject/
 
 # macOS
 .DS_Store
+
+# Node.js (backend)
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+dist/

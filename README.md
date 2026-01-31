@@ -72,6 +72,7 @@ KanbanBoard/
 │   │   ├── AddColumnView.swift   # Add column form
 │   │   └── EditColumnView.swift  # Edit column form
 │   └── Info.plist                # App configuration
+├── backend/                      # REST API backend (OpenAPI + Swagger)
 └── README.md
 ```
 
@@ -103,6 +104,12 @@ The app uses UserDefaults to persist board data. All changes are automatically s
 - Add, edit, or delete cards
 - Add, edit, or delete columns
 - Move cards between columns
+
+## Backend API (Optional)
+
+KanbanBoard includes an optional REST API backend in `backend/` that mirrors the
+future server capabilities (OpenAPI + Swagger UI). See `backend/README.md` for
+setup and usage.
 
 ## Future Enhancements
 
