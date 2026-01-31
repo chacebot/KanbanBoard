@@ -73,7 +73,7 @@ From the repository root:
 docker compose up --build
 ```
 
-The API will be available at `http://localhost:8000`, and Postgres at `localhost:5432`.
+The API will be available at `http://localhost:8000`, and Postgres at `localhost:5433`.
 
 After the containers start, run migrations once:
 
